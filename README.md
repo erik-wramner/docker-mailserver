@@ -1,6 +1,6 @@
 # docker-mailserver
 
-[![Build Status](https://travis-ci.org/tomav/docker-mailserver.svg?branch=master)](https://travis-ci.org/tomav/docker-mailserver) [![Docker Pulls](https://img.shields.io/docker/pulls/erikwramner/docker-mailserver.svg)](https://hub.docker.com/r/erikwramner/docker-mailserver/) [![Docker layers](https://images.microbadger.com/badges/image/erikwramner/docker-mailserver.svg)](https://microbadger.com/images/erikwramner/docker-mailserver) [![Github Stars](https://img.shields.io/github/stars/tomav/docker-mailserver.svg?label=github%20%E2%98%85)](https://github.com/tomav/docker-mailserver/) [![Github Stars](https://img.shields.io/github/contributors/tomav/docker-mailserver.svg)](https://github.com/tomav/docker-mailserver/) [![Github Forks](https://img.shields.io/github/forks/tomav/docker-mailserver.svg?label=github%20forks)](https://github.com/tomav/docker-mailserver/) [![Gitter](https://img.shields.io/gitter/room/tomav/docker-mailserver.svg)](https://gitter.im/tomav/docker-mailserver)
+[![Build Status](https://travis-ci.org/erik-wramner/docker-mailserver.svg?branch=master)](https://travis-ci.org/erik-wramner/docker-mailserver) [![Docker Pulls](https://img.shields.io/docker/pulls/erikwramner/docker-mailserver.svg)](https://hub.docker.com/r/erikwramner/docker-mailserver/) 
 
 
 A fullstack but simple mail server (smtp, imap, antispam, antivirus...).
@@ -32,7 +32,7 @@ Includes:
 - [LetsEncrypt](https://letsencrypt.org/) and self-signed certificates
 - [setup script](https://github.com/tomav/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) to easily configure and maintain your mailserver
 - persistent data and state (but think about backups!)
-- [integration tests](https://travis-ci.org/tomav/docker-mailserver)
+- [integration tests](https://travis-ci.org/erik-wramner/docker-mailserver)
 - [automated builds on docker hub](https://hub.docker.com/r/erikwramner/docker-mailserver/)
 
 Why the image was created: [Simple mail server with Docker](http://tvi.al/simple-mail-server-with-docker/)
@@ -61,11 +61,11 @@ Minimum:
 
 Download the docker-compose.yml, the .env and the setup.sh files:
 
-    curl -o setup.sh https://raw.githubusercontent.com/tomav/docker-mailserver/master/setup.sh; chmod a+x ./setup.sh
+    curl -o setup.sh https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/setup.sh; chmod a+x ./setup.sh
 
-    curl -o docker-compose.yml https://raw.githubusercontent.com/tomav/docker-mailserver/master/docker-compose.yml.dist
+    curl -o docker-compose.yml https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/docker-compose.yml.dist
 
-    curl -o .env https://raw.githubusercontent.com/tomav/docker-mailserver/master/.env.dist
+    curl -o .env https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/.env.dist
 
 #### Create a docker-compose environment
 
