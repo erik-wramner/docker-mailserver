@@ -1,7 +1,7 @@
 version: '2'
 services:
   mail:
-    image: tvial/docker-mailserver:latest
+    image: erikwramner/docker-mailserver:latest
     hostname: ${HOSTNAME}
     domainname: ${DOMAINNAME}
     container_name: ${CONTAINER_NAME}

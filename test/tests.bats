@@ -1358,7 +1358,7 @@ load 'test_helper/bats-assert/load'
 @test "checking setup.sh: setup.sh debug inspect" {
   run ./setup.sh -c mail debug inspect
   assert_success
-  [ "${lines[0]}" = "Image: tvial/docker-mailserver:testing" ]
+  [ "${lines[0]}" = "Image: erikwramner/docker-mailserver:testing" ]
   [ "${lines[1]}" = "Container: mail" ]
 }
 @test "checking setup.sh: setup.sh debug login ls" {

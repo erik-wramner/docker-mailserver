@@ -1,11 +1,18 @@
 # docker-mailserver
 
-[![Build Status](https://travis-ci.org/tomav/docker-mailserver.svg?branch=master)](https://travis-ci.org/tomav/docker-mailserver) [![Docker Pulls](https://img.shields.io/docker/pulls/tvial/docker-mailserver.svg)](https://hub.docker.com/r/tvial/docker-mailserver/) [![Docker layers](https://images.microbadger.com/badges/image/tvial/docker-mailserver.svg)](https://microbadger.com/images/tvial/docker-mailserver) [![Github Stars](https://img.shields.io/github/stars/tomav/docker-mailserver.svg?label=github%20%E2%98%85)](https://github.com/tomav/docker-mailserver/) [![Github Stars](https://img.shields.io/github/contributors/tomav/docker-mailserver.svg)](https://github.com/tomav/docker-mailserver/) [![Github Forks](https://img.shields.io/github/forks/tomav/docker-mailserver.svg?label=github%20forks)](https://github.com/tomav/docker-mailserver/) [![Gitter](https://img.shields.io/gitter/room/tomav/docker-mailserver.svg)](https://gitter.im/tomav/docker-mailserver)
+[![Build Status](https://travis-ci.org/tomav/docker-mailserver.svg?branch=master)](https://travis-ci.org/tomav/docker-mailserver) [![Docker Pulls](https://img.shields.io/docker/pulls/erikwramner/docker-mailserver.svg)](https://hub.docker.com/r/erikwramner/docker-mailserver/) [![Docker layers](https://images.microbadger.com/badges/image/erikwramner/docker-mailserver.svg)](https://microbadger.com/images/erikwramner/docker-mailserver) [![Github Stars](https://img.shields.io/github/stars/tomav/docker-mailserver.svg?label=github%20%E2%98%85)](https://github.com/tomav/docker-mailserver/) [![Github Stars](https://img.shields.io/github/contributors/tomav/docker-mailserver.svg)](https://github.com/tomav/docker-mailserver/) [![Github Forks](https://img.shields.io/github/forks/tomav/docker-mailserver.svg?label=github%20forks)](https://github.com/tomav/docker-mailserver/) [![Gitter](https://img.shields.io/gitter/room/tomav/docker-mailserver.svg)](https://gitter.im/tomav/docker-mailserver)
 
 
 A fullstack but simple mail server (smtp, imap, antispam, antivirus...).
-Only configuration files, no SQL database. Keep it simple and versioned.
-Easy to deploy and upgrade.
+Only configuration files, no SQL database. Easy to deploy and upgrade. 
+
+This is a fork of https://github.com/tomav/docker-mailserver (upstream). Unfortunately it seems to have stalled with no releases,
+broken tests and pull requests not being processed. My goal is to ensure that there are frequent builds, as that is the only
+way to ensure that security updates get into the image, that updates don't break things and that the tests work. I probably
+won't add features; on the contrary I may remove some to get a smaller image with fewer potential security issues. I don't
+plan to spend a lot of time on this and I'm still hoping that upstream will recover.
+
+I haven't done much, the credit for this fine image should go to upstream.
 
 Includes:
 
@@ -26,11 +33,11 @@ Includes:
 - [setup script](https://github.com/tomav/docker-mailserver/wiki/Setup-docker-mailserver-using-the-script-setup.sh) to easily configure and maintain your mailserver
 - persistent data and state (but think about backups!)
 - [integration tests](https://travis-ci.org/tomav/docker-mailserver)
-- [automated builds on docker hub](https://hub.docker.com/r/tvial/docker-mailserver/)
+- [automated builds on docker hub](https://hub.docker.com/r/erikwramner/docker-mailserver/)
 
-Why I created this image: [Simple mail server with Docker](http://tvi.al/simple-mail-server-with-docker/)
+Why the image was created: [Simple mail server with Docker](http://tvi.al/simple-mail-server-with-docker/)
 
-Before you open an issue, please have a look this `README`, the [Wiki](https://github.com/tomav/docker-mailserver/wiki/) and Postfix/Dovecot documentation.
+Before you open an issue, please have a look this `README`, the upstream [Wiki](https://github.com/tomav/docker-mailserver/wiki/) and Postfix/Dovecot documentation.
 
 ## Requirements
 
@@ -48,7 +55,7 @@ Minimum:
 
 #### Get latest image
 
-    docker pull tvial/docker-mailserver:latest
+    docker pull erikwramner/docker-mailserver:latest
 
 #### Get the tools
 
@@ -118,7 +125,7 @@ version: '2'
 
 services:
   mail:
-    image: tvial/docker-mailserver:latest
+    image: erikwramner/docker-mailserver:latest
     hostname: mail
     domainname: domain.com
     container_name: mail
@@ -156,7 +163,7 @@ version: '2'
 
 services:
   mail:
-    image: tvial/docker-mailserver:latest
+    image: erikwramner/docker-mailserver:latest
     hostname: mail
     domainname: domain.com
     container_name: mail
