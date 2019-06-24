@@ -74,8 +74,26 @@ services:
     - SASLAUTHD_LDAP_TLS_CHECK_PEER=${SASLAUTHD_LDAP_TLS_CHECK_PEER}
     - SASL_PASSWD=${SASL_PASSWD}
     cap_add:
+    # NET_ADMIN needed by fail2ban, remove if not used or if used on the host
     - NET_ADMIN
+    # SYS_PTRACE needed by postfix script for service commands (reload etc)
     - SYS_PTRACE
+    cap_drop:
+    # SETFCAP allows you to set file capabilities on a file system
+    # Might be needed for installs during builds, but not in production
+    - SETFCAP
+    # A process with this capability can change its current capability set within its bounding set.
+    # Meaning a process could drop capabilities or add capabilities if it did not currently have them,
+    # but limited by the bounding set capabilities.
+    - SETPCAP
+    # This allows your processes to create device nodes.
+    # Containers are usually provided all of the device nodes they need in /dev.
+    # Almost no containers ever do this, and even fewer containers should do this.
+    - MKNOD
+    # If you have this one, you can write a message to kernel auditing log.
+    # Few processes attempt to write to the audit log (login programs, su, sudo)
+    # The audit subsystem is not currently namespace aware, so this should be dropped.
+    - AUDIT_WRITE
     restart: always
   elk:
      build: elk

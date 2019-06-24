@@ -146,7 +146,9 @@ services:
       - ONE_DIR=1
       - DMS_DEBUG=0
     cap_add:
+      # Needed by fail2ban, remove if not used
       - NET_ADMIN
+      # Needed by postfix management script
       - SYS_PTRACE
 
 volumes:
@@ -203,7 +205,9 @@ services:
       - POSTMASTER_ADDRESS=postmaster@localhost.localdomain
       - POSTFIX_MESSAGE_SIZE_LIMIT=100000000
     cap_add:
+      # Needed by fail2ban, remove if not used
       - NET_ADMIN
+      # Needed by postfix management script
       - SYS_PTRACE
 
 volumes:
@@ -251,7 +255,7 @@ If you enable Fail2Ban, don't forget to add the following lines to your `docker-
     cap_add:
       - NET_ADMIN
 
-Otherwise, `iptables` won't be able to ban IPs.
+Otherwise, `iptables` won't be able to ban IPs. Likewise don't forget to remove the capability if fail2ban is not used.
 
 ##### SMTP_ONLY
 
