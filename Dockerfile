@@ -3,7 +3,7 @@ LABEL name="docker-mailserver" \
       description="Fullstack but simple mail server" \
       maintainer="Thomas VIAL (upstream), Erik Wramner (this fork)"
 
-ENV DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 ENV VIRUSMAILS_DELETE_DELAY=7
 ENV ONE_DIR=0
 ENV ENABLE_POSTGREY=0
@@ -101,7 +101,7 @@ RUN apt-get update -q --fix-missing && \
   rm -f /etc/cron.weekly/fstrim && \
   rm -f /etc/postsrsd.secret
 
-RUN echo "30 * * * * root /usr/bin/freshclam --quiet" > /etc/cron.d/clamav-freshclam && \
+RUN echo "0 0,6,12,18 * * * root /usr/bin/freshclam --quiet" > /etc/cron.d/clamav-freshclam && \
   chmod 644 /etc/clamav/freshclam.conf && \
   freshclam && \
   sed -i 's/Foreground false/Foreground true/g' /etc/clamav/clamd.conf && \
