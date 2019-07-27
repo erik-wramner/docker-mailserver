@@ -93,7 +93,8 @@ services:
     # If you have this one, you can write a message to kernel auditing log.
     # Few processes attempt to write to the audit log (login programs, su, sudo)
     # The audit subsystem is not currently namespace aware, so this should be dropped.
-    - AUDIT_WRITE
+    # Unfortunately used by cron when running freshclam, so keep it.
+    # - AUDIT_WRITE
     restart: always
   elk:
      build: elk

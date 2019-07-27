@@ -99,10 +99,8 @@ services:
     # Containers are usually provided all of the device nodes they need in /dev.
     # Almost no containers ever do this, and even fewer containers should do this.
     - MKNOD
-    # If you have this one, you can write a message to kernel auditing log.
-    # Few processes attempt to write to the audit log (login programs, su, sudo)
-    # The audit subsystem is not currently namespace aware, so this should be dropped.
-    - AUDIT_WRITE
+    # AUDIT_WRITE needed by cron when running freshclam, don't drop!
+    # - AUDIT_WRITE
     restart: always
 volumes:
   maildata:
