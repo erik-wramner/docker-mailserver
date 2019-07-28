@@ -45,7 +45,7 @@ run:
 		-e SASL_PASSWD="external-domain.com username:password" \
 		-e ENABLE_MANAGESIEVE=1 \
 		--cap-add=SYS_PTRACE \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-e PERMIT_DOCKER=host \
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
@@ -63,7 +63,7 @@ run:
 		-e SASL_PASSWD="external-domain.com username:password" \
 		-e ENABLE_MANAGESIEVE=1 \
 		--cap-add=SYS_PTRACE \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-e PERMIT_DOCKER=host \
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
@@ -71,7 +71,7 @@ run:
 	docker run -d --name mail_pop3 \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test":/tmp/docker-mailserver-test \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-v "`pwd`/test/config/letsencrypt":/etc/letsencrypt/live \
 		-e ENABLE_POP3=1 \
 		-e DMS_DEBUG=0 \
@@ -81,7 +81,7 @@ run:
 	docker run -d --name mail_smtponly \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test":/tmp/docker-mailserver-test \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-e SMTP_ONLY=1 \
 		-e PERMIT_DOCKER=network \
 		-e DMS_DEBUG=0 \
@@ -93,7 +93,7 @@ run:
 		-e ENABLE_LDAP=1 \
 		-e PERMIT_DOCKER=network \
 		-e OVERRIDE_HOSTNAME=mail.mydomain.com \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
 	docker run -d --name mail_override_hostname \
@@ -103,7 +103,7 @@ run:
 		-e DMS_DEBUG=0 \
 		-e ENABLE_SRS=1 \
 		-e OVERRIDE_HOSTNAME=mail.my-domain.com \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h unknown.domain.tld \
 		-t $(NAME)
 	sleep 15
@@ -115,7 +115,7 @@ run:
 		-e ENABLE_SRS=1 \
 		-e DOMAINNAME=my-domain.com \
 		-h unknown.domain.tld \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
 	docker run -d --name mail_srs_domainname \
@@ -127,7 +127,7 @@ run:
 		-e SRS_DOMAINNAME=srs.my-domain.com \
 		-e DOMAINNAME=my-domain.com \
 		-h unknown.domain.tld \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
 	docker run -d --name mail_fail2ban \
@@ -136,7 +136,7 @@ run:
 		-e ENABLE_FAIL2BAN=1 \
 		-e POSTSCREEN_ACTION=ignore \
 		--cap-add=NET_ADMIN \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_fetchmail \
@@ -144,7 +144,7 @@ run:
 		-v "`pwd`/test":/tmp/docker-mailserver-test \
 		-e ENABLE_FETCHMAIL=1 \
 		--cap-add=NET_ADMIN \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
@@ -154,7 +154,7 @@ run:
 		-e ENABLE_CLAMAV=0 \
 		-e ENABLE_SPAMASSASSIN=0 \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_manual_ssl \
@@ -164,7 +164,7 @@ run:
 		-e SSL_CERT_PATH=/tmp/docker-mailserver/letsencrypt/mail.my-domain.com/fullchain.pem \
 		-e SSL_KEY_PATH=/tmp/docker-mailserver/letsencrypt/mail.my-domain.com/privkey.pem \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name ldap_for_mail \
@@ -197,7 +197,7 @@ run:
 		-e SASLAUTHD_LDAP_SEARCH_BASE=ou=people,dc=localhost,dc=localdomain \
 		-e POSTMASTER_ADDRESS=postmaster@localhost.localdomain \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		--link ldap_for_mail:ldap \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
@@ -209,7 +209,7 @@ run:
 		-e SASLAUTHD_MECH_OPTIONS=127.0.0.1 \
 		-e POSTMASTER_ADDRESS=postmaster@localhost.localdomain \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_postscreen \
@@ -217,7 +217,7 @@ run:
 		-v "`pwd`/test":/tmp/docker-mailserver-test \
 		-e POSTSCREEN_ACTION=enforce \
 		--cap-add=NET_ADMIN \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_lmtp_ip \
@@ -227,7 +227,7 @@ run:
 		-e ENABLE_POSTFIX_VIRTUAL_TRANSPORT=1 \
 		-e POSTFIX_DAGENT=lmtp:127.0.0.1:24 \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 30
 	docker run -d --name mail_with_postgrey \
@@ -239,7 +239,7 @@ run:
 		-e POSTGREY_AUTO_WHITELIST_CLIENTS=5 \
 		-e POSTGREY_TEXT="Delayed by postgrey" \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 20
 	docker run -d --name mail_undef_spam_subject \
@@ -247,7 +247,7 @@ run:
 		-v "`pwd`/test":/tmp/docker-mailserver-test \
 		-e ENABLE_SPAMASSASSIN=1 \
 		-e SA_SPAM_SUBJECT="undef" \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_with_relays \
@@ -260,7 +260,7 @@ run:
 		--cap-add=SYS_PTRACE \
 		-e PERMIT_DOCKER=host \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 	docker run -d --name mail_with_default_relay \
@@ -270,7 +270,7 @@ run:
 		--cap-add=SYS_PTRACE \
 		-e PERMIT_DOCKER=host \
 		-e DMS_DEBUG=0 \
-		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD --cap-drop=AUDIT_WRITE \
+		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
 
