@@ -186,7 +186,6 @@ COPY target/postfix/header_checks.pcre target/postfix/sender_header_filter.pcre 
 RUN echo "" > /etc/aliases && \
   openssl dhparam -out /etc/postfix/dhparams.pem 2048
 
-
 # Configuring Logs
 RUN sed -i -r "/^#?compress/c\compress\ncopytruncate" /etc/logrotate.conf && \
   mkdir -p /var/log/mail && \
