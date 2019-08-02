@@ -29,7 +29,7 @@ run:
 	# Run containers
 	docker run -d --name mail \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-v "`pwd`/test/onedir":/var/mail-state \
 		-e ENABLE_CLAMAV=1 \
 		-e SPOOF_PROTECTION=1 \
@@ -52,7 +52,7 @@ run:
 	sleep 15
 	docker run -d --name mail_privacy \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_CLAMAV=1 \
 		-e ENABLE_SPAMASSASSIN=1 \
 		-e SA_TAG=-5.0 \
@@ -70,8 +70,8 @@ run:
 	sleep 15
 	docker run -d --name mail_pop3 \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-v "`pwd`/test/config/letsencrypt":/etc/letsencrypt/live \
 		-e ENABLE_POP3=1 \
 		-e DMS_DEBUG=0 \
@@ -80,8 +80,8 @@ run:
 	sleep 15
 	docker run -d --name mail_smtponly \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e SMTP_ONLY=1 \
 		-e PERMIT_DOCKER=network \
 		-e DMS_DEBUG=0 \
@@ -98,7 +98,7 @@ run:
 	sleep 15
 	docker run -d --name mail_override_hostname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
 		-e DMS_DEBUG=0 \
 		-e ENABLE_SRS=1 \
@@ -109,7 +109,7 @@ run:
 	sleep 15
 	docker run -d --name mail_domainname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
 		-e DMS_DEBUG=0 \
 		-e ENABLE_SRS=1 \
@@ -120,7 +120,7 @@ run:
 	sleep 15
 	docker run -d --name mail_srs_domainname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
 		-e DMS_DEBUG=0 \
 		-e ENABLE_SRS=1 \
@@ -132,7 +132,7 @@ run:
 	sleep 15
 	docker run -d --name mail_fail2ban \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_FAIL2BAN=1 \
 		-e POSTSCREEN_ACTION=ignore \
 		--cap-add=NET_ADMIN \
@@ -141,7 +141,7 @@ run:
 	sleep 15
 	docker run -d --name mail_fetchmail \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_FETCHMAIL=1 \
 		--cap-add=NET_ADMIN \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
@@ -150,7 +150,7 @@ run:
 	sleep 15
 	docker run -d --name mail_disabled_clamav_spamassassin \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_CLAMAV=0 \
 		-e ENABLE_SPAMASSASSIN=0 \
 		-e DMS_DEBUG=0 \
@@ -159,7 +159,7 @@ run:
 	sleep 15
 	docker run -d --name mail_manual_ssl \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e SSL_TYPE=manual \
 		-e SSL_CERT_PATH=/tmp/docker-mailserver/letsencrypt/mail.my-domain.com/fullchain.pem \
 		-e SSL_KEY_PATH=/tmp/docker-mailserver/letsencrypt/mail.my-domain.com/privkey.pem \
@@ -173,7 +173,7 @@ run:
 	sleep 15
 	docker run -d --name mail_with_ldap \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_LDAP=1 \
 		-e LDAP_SERVER_HOST=ldap \
 		-e LDAP_START_TLS=no \
@@ -203,7 +203,7 @@ run:
 	sleep 15
 	docker run -d --name mail_with_imap \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_SASLAUTHD=1 \
 		-e SASLAUTHD_MECHANISMS=rimap \
 		-e SASLAUTHD_MECH_OPTIONS=127.0.0.1 \
@@ -214,7 +214,7 @@ run:
 	sleep 15
 	docker run -d --name mail_postscreen \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e POSTSCREEN_ACTION=enforce \
 		--cap-add=NET_ADMIN \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
@@ -223,7 +223,7 @@ run:
 	docker run -d --name mail_lmtp_ip \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/config/dovecot-lmtp":/etc/dovecot \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_POSTFIX_VIRTUAL_TRANSPORT=1 \
 		-e POSTFIX_DAGENT=lmtp:127.0.0.1:24 \
 		-e DMS_DEBUG=0 \
@@ -232,7 +232,7 @@ run:
 	sleep 30
 	docker run -d --name mail_with_postgrey \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_POSTGREY=1 \
 		-e POSTGREY_DELAY=15 \
 		-e POSTGREY_MAX_AGE=35 \
@@ -244,7 +244,7 @@ run:
 	sleep 20
 	docker run -d --name mail_undef_spam_subject \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_SPAMASSASSIN=1 \
 		-e SA_SPAM_SUBJECT="undef" \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
@@ -252,7 +252,7 @@ run:
 	sleep 15
 	docker run -d --name mail_with_relays \
 		-v "`pwd`/test/config/relay-hosts":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e RELAY_HOST=default.relay.com \
 		-e RELAY_PORT=2525 \
 		-e RELAY_USER=smtp_user \
@@ -265,7 +265,7 @@ run:
 	sleep 15
 	docker run -d --name mail_with_default_relay \
 		-v "`pwd`/test/config/relay-hosts":/tmp/docker-mailserver \
-		-v "`pwd`/test":/tmp/docker-mailserver-test \
+		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e DEFAULT_RELAY_HOST=default.relay.host.invalid:25 \
 		--cap-add=SYS_PTRACE \
 		-e PERMIT_DOCKER=host \
