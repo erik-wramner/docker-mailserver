@@ -850,6 +850,12 @@ function _setup_dkim() {
 		local _f_keytable="/etc/opendkim/KeyTable"
 		[ ! -f "$_f_keytable" ] && touch "$_f_keytable"
 	fi
+
+	# Setup nameservers paramater from /etc/resolv.conf if not defined
+	if ! grep '^Nameservers' /etc/opendkim.conf; then
+		echo "Nameservers $(grep '^nameserver' /etc/resolv.conf | awk -F " " '{print $2}')" >> /etc/opendkim.conf
+		notify 'inf' "Nameservers added to /etc/opendkim.conf"
+	fi
 }
 
 function _setup_ssl() {
@@ -1016,6 +1022,7 @@ function _setup_docker_permit() {
 
 	container_ip=$(ip addr show eth0 | grep 'inet ' | sed 's/[^0-9\.\/]*//g' | cut -d '/' -f 1)
 	container_network="$(echo $container_ip | cut -d '.' -f1-2).0.0"
+	container_networks=$(ip -o -4 addr show type veth | egrep -o '[0-9\.]+/[0-9]+')
 
 	case $PERMIT_DOCKER in
 		"host" )
@@ -1031,7 +1038,14 @@ function _setup_docker_permit() {
 			echo 172.16.0.0/12 >> /etc/opendmarc/ignore.hosts
 			echo 172.16.0.0/12 >> /etc/opendkim/TrustedHosts
 			;;
-
+		"connected-networks" )
+			for network in $container_networks; do
+				notify 'inf' "Adding docker network $network in my networks"
+				postconf -e "$(postconf | grep '^mynetworks =') $network"
+				echo $network >> /etc/opendmarc/ignore.hosts
+				echo $network >> /etc/opendkim/TrustedHosts
+			done
+			;;
 		* )
 			notify 'inf' "Adding container ip in my networks"
 			postconf -e "$(postconf | grep '^mynetworks =') $container_ip/32"

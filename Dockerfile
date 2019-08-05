@@ -72,6 +72,7 @@ RUN apt-get update -q --fix-missing && \
     postgrey \
     unrar-free \
     unzip \
+    whois \
     xz-utils \
     zoo \
     && \
