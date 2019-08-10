@@ -2,7 +2,7 @@ load 'test_helper/bats-support/load'
 load 'test_helper/bats-assert/load'
 
 NON_DEFAULT_DOCKER_MAIL_NETWORK_NAME=non-default-docker-mail-network
-NAME=tvial/docker-mailserver:testing
+NAME=erikwramner/docker-mailserver:testing
 setup() {
     docker network create --driver bridge ${NON_DEFAULT_DOCKER_MAIL_NETWORK_NAME}
 	docker network create --driver bridge ${NON_DEFAULT_DOCKER_MAIL_NETWORK_NAME}2
