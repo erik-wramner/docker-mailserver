@@ -121,11 +121,8 @@ RUN sed -i -e 's/include_try \/usr\/share\/dovecot\/protocols\.d/include_try \/e
   # stretch-backport of dovecot needs this folder
   mkdir /etc/dovecot/ssl && \
   chmod 755 /etc/dovecot/ssl  && \
-  cd /usr/share/dovecot && \
-  ./mkcert.sh  && \
   mkdir -p /usr/lib/dovecot/sieve-pipe /usr/lib/dovecot/sieve-filter /usr/lib/dovecot/sieve-global && \
-  chmod 755 -R /usr/lib/dovecot/sieve-pipe /usr/lib/dovecot/sieve-filter /usr/lib/dovecot/sieve-global && \
-  openssl dhparam -out /etc/dovecot/dh.pem 2048
+  chmod 755 -R /usr/lib/dovecot/sieve-pipe /usr/lib/dovecot/sieve-filter /usr/lib/dovecot/sieve-global
 
 # Configures LDAP
 COPY target/dovecot/dovecot-ldap.conf.ext /etc/dovecot
@@ -184,8 +181,7 @@ RUN mkdir /var/run/fetchmail && chown fetchmail /var/run/fetchmail
 # Configures Postfix
 COPY target/postfix/main.cf target/postfix/master.cf /etc/postfix/
 COPY target/postfix/header_checks.pcre target/postfix/sender_header_filter.pcre target/postfix/sender_login_maps.pcre /etc/postfix/maps/
-RUN echo "" > /etc/aliases && \
-  openssl dhparam -out /etc/postfix/dhparams.pem 2048
+RUN echo "" > /etc/aliases
 
 # Configuring Logs
 RUN sed -i -r "/^#?compress/c\compress\ncopytruncate" /etc/logrotate.conf && \
