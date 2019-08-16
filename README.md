@@ -6,11 +6,9 @@
 A fullstack but simple mail server (smtp, imap, antispam, antivirus...).
 Only configuration files, no SQL database. Easy to deploy and upgrade. 
 
-This is a fork of https://github.com/tomav/docker-mailserver (upstream). Unfortunately it seems to have stalled with no releases,
-broken tests and pull requests not being processed. My goal is to ensure that there are frequent builds, as that is the only
-way to ensure that security updates get into the image, that updates don't break things and that the tests work. I probably
-won't add features; on the contrary I may remove some to get a smaller image with fewer potential security issues. I don't
-plan to spend a lot of time on this and I'm still hoping that upstream will recover.
+This is a fork of https://github.com/tomav/docker-mailserver (upstream). For a while it had stalled with no releases,
+broken tests and pull requests not being processed. My goal with this fork was to fix that. Now the upstream project
+has recovered, so there is little reason to use my fork. I will keep it running just in case, though.
 
 I haven't done much, the credit for this fine image should go to upstream.
 
