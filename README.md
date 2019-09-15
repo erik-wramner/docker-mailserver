@@ -90,7 +90,7 @@ Now the keys are generated, you can configure your DNS server by just pasting th
 #### Restart and update the container
 
     docker-compose down
-    docker pull tvial/docker-mailserver:latest
+    docker pull erik-wramner/docker-mailserver:latest
     docker-compose up -d mail
 
 You're done!

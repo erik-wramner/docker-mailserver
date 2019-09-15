@@ -27,7 +27,7 @@ generate-accounts:
 
 run:
 	# Run containers
-	docker run -d --name mail \
+	docker run --rm -d --name mail \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-v "`pwd`/test/onedir":/var/mail-state \
@@ -50,7 +50,7 @@ run:
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_privacy \
+	docker run --rm -d --name mail_privacy \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_CLAMAV=1 \
@@ -68,7 +68,7 @@ run:
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_pop3 \
+	docker run --rm -d --name mail_pop3 \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
@@ -78,7 +78,7 @@ run:
 		-e SSL_TYPE=letsencrypt \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_smtponly \
+	docker run --rm -d --name mail_smtponly \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
@@ -88,7 +88,7 @@ run:
 		-e OVERRIDE_HOSTNAME=mail.my-domain.com \
 		-t $(NAME)
 	sleep 15
-	docker run -d --name mail_smtponly_without_config \
+	docker run --rm -d --name mail_smtponly_without_config \
 		-e SMTP_ONLY=1 \
 		-e ENABLE_LDAP=1 \
 		-e PERMIT_DOCKER=network \
@@ -96,7 +96,7 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
-	docker run -d --name mail_override_hostname \
+	docker run --rm -d --name mail_override_hostname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
@@ -107,7 +107,7 @@ run:
 		-h unknown.domain.tld \
 		-t $(NAME)
 	sleep 15
-	docker run -d --name mail_domainname \
+	docker run --rm -d --name mail_domainname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
@@ -118,7 +118,7 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
-	docker run -d --name mail_srs_domainname \
+	docker run --rm -d --name mail_srs_domainname \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e PERMIT_DOCKER=network \
@@ -130,7 +130,7 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-t $(NAME)
 	sleep 15
-	docker run -d --name mail_fail2ban \
+	docker run --rm -d --name mail_fail2ban \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_FAIL2BAN=1 \
@@ -139,7 +139,7 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_fetchmail \
+	docker run --rm -d --name mail_fetchmail \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_FETCHMAIL=1 \
@@ -148,7 +148,7 @@ run:
 		-e DMS_DEBUG=0 \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_disabled_clamav_spamassassin \
+	docker run --rm -d --name mail_disabled_clamav_spamassassin \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_CLAMAV=0 \
@@ -157,7 +157,7 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name mail_manual_ssl \
+	docker run --rm -d --name mail_manual_ssl \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e SSL_TYPE=manual \
@@ -167,11 +167,11 @@ run:
 		--cap-drop=SETFCAP --cap-drop=SETPCAP --cap-drop=MKNOD  \
 		-h mail.my-domain.com -t $(NAME)
 	sleep 15
-	docker run -d --name ldap_for_mail \
+	docker run --rm -d --name ldap_for_mail \
 		-e LDAP_DOMAIN="localhost.localdomain" \
 		-h ldap.my-domain.com -t ldap
 	sleep 15
-	docker run -d --name mail_with_ldap \
+	docker run --rm -d --name mail_with_ldap \
 		-v "`pwd`/test/config":/tmp/docker-mailserver \
 		-v "`pwd`/test/test-files":/tmp/docker-mailserver-test:ro \
 		-e ENABLE_LDAP=1 \
@@ -253,23 +253,8 @@ lint:
 	git ls-files --exclude='Dockerfile*' --ignored | xargs --max-lines=1 hadolint
 
 clean:
-	# Remove running test containers
-	-docker rm -f \
-		mail \
-		mail_privacy \
-		mail_pop3 \
-		mail_smtponly \
-		mail_smtponly_without_config \
-		mail_fail2ban \
-		mail_fetchmail \
-		fail-auth-mailer \
-		mail_disabled_clamav_spamassassin \
-		mail_manual_ssl \
-		ldap_for_mail \
-		mail_with_ldap \
-		mail_override_hostname \
-		mail_domainname \
-		mail_srs_domainname
+	# Remove running and stopped test containers
+	-docker ps -a | grep -E "docker-mailserver:testing|ldap_for_mail" | cut -f 1-1 -d ' ' | xargs --no-run-if-empty docker rm -f
 
 	@if [ -d config.bak ]; then\
 		rm -rf config ;\
