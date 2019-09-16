@@ -48,6 +48,8 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" | tee -a /et
     iproute2 \
     iptables \
     locales \
+    logwatch \
+    libdate-manip-perl \
     liblz4-tool \
     libmail-spf-perl \
     libnet-dns-perl \
@@ -103,7 +105,8 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" | tee -a /et
   touch /var/log/auth.log && \
   update-locale && \
   rm -f /etc/cron.weekly/fstrim && \
-  rm -f /etc/postsrsd.secret
+  rm -f /etc/postsrsd.secret && \
+  rm -f /etc/cron.daily/00logwatch
 
 # install filebeat for logging
 RUN curl https://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add - && \
