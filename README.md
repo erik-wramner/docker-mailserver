@@ -61,15 +61,16 @@ Minimum:
 Download the docker-compose.yml, the .env and the setup.sh files:
 
     curl -o setup.sh https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/setup.sh; chmod a+x ./setup.sh
-
     curl -o docker-compose.yml https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/docker-compose.yml.dist
-
     curl -o .env https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/.env.dist
+    curl -o env-mailserver https://raw.githubusercontent.com/erik-wramner/docker-mailserver/master/env-mailserver.dist
 
 #### Create a docker-compose environment
 
-- Edit the `.env` to your liking. Adapt this file with your FQDN.
-  - This file supports only simple `VAR=VAL` lines (see [Documentation](https://docs.docker.com/compose/env-file/)).
+- Edit the files `.env` and `.env-mailserver` to your liking:
+  - `.env` contains the configuration for docker-compose
+  - `env-mailserver` contains the configuration for the mailserver container
+  - These files supports only simple `VAR=VAL` lines (see [Documentation](https://docs.docker.com/compose/env-file/)).
   - Don't quote your values.
   - Variable substitution is *not* supported (e.g. `OVERRIDE_HOSTNAME=$HOSTNAME.$DOMAINNAME`).
 - Install [docker-compose](https://docs.docker.com/compose/) in the version `1.7` or higher.
