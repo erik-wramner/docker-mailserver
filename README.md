@@ -104,7 +104,7 @@ If you got any problems with SPF and/or forwarding mails, give [SRS](https://git
 
 #### For informational purposes:
 
-Your config folder will be mounted in `/tmp/docker-mailserver/`. To understand how things work on boot, please have a look at [start-mailserver.sh](https://github.com/tomav/docker-mailserver/blob/master/target/start-mailserver.sh)
+Your config folder will be mounted in `/tmp/docker-mailserver/`. To understand how things work on boot, please have a look at [start-mailserver.sh](https://github.com/erik-wramner/docker-mailserver/blob/master/target/start-mailserver.sh)
 
 `restart: always` ensures that the mail server container (and ELK container when using the mail server together with ELK stack) is automatically restarted by Docker in cases like a Docker service or host restart or container exit.
 
@@ -226,7 +226,7 @@ volumes:
 
 # Environment variables
 
-Please check [how the container starts](https://github.com/tomav/docker-mailserver/blob/master/target/start-mailserver.sh) to understand what's expected. Also if an option doesn't work as documented here, check if you are running the latest image!
+Please check [how the container starts](https://github.com/erik-wramner/docker-mailserver/blob/master/target/start-mailserver.sh) to understand what's expected. Also if an option doesn't work as documented here, check if you are running the latest image!
 
 Value in **bold** is the default value.
 

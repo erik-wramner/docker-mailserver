@@ -1,7 +1,16 @@
 FROM debian:stretch-slim
-LABEL name="docker-mailserver" \
-      description="Fullstack but simple mail server" \
-      maintainer="Thomas VIAL (upstream), Erik Wramner (this fork)"
+
+ARG VCS_REF
+ARG VCS_VERSION
+
+LABEL maintainer="Thomas VIAL (upstream), Erik Wramner (this fork)"  \
+    org.label-schema.name="docker-mailserver" \
+    org.label-schema.description="Fullstack but simple mailserver" \
+    org.label-schema.url="https://github.com/erik-wramner/docker-mailserver" \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url="https://github.com/erik-wramner/docker-mailserver" \
+    org.label-schema.version=$VCS_VERSION \
+    org.label-schema.schema-version="1.0"
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV VIRUSMAILS_DELETE_DELAY=7
