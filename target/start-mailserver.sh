@@ -17,6 +17,7 @@ DEFAULT_VARS["FETCHMAIL_POLL"]="${FETCHMAIL_POLL:="300"}"
 DEFAULT_VARS["ENABLE_LDAP"]="${ENABLE_LDAP:="0"}"
 DEFAULT_VARS["LDAP_START_TLS"]="${LDAP_START_TLS:="no"}"
 DEFAULT_VARS["DOVECOT_TLS"]="${DOVECOT_TLS:="no"}"
+DEFAULT_VARS["DOVECOT_MAILBOX_FORMAT"]="${DOVECOT_MAILBOX_FORMAT:="maildir"}"
 DEFAULT_VARS["ENABLE_POSTGREY"]="${ENABLE_POSTGREY:="0"}"
 DEFAULT_VARS["POSTGREY_DELAY"]="${POSTGREY_DELAY:="300"}"
 DEFAULT_VARS["POSTGREY_MAX_AGE"]="${POSTGREY_MAX_AGE:="35"}"
@@ -173,7 +174,8 @@ function register_functions() {
 	if [ "$LOGWATCH_TRIGGER" != "none" ]; then
 		_register_setup_function "_setup_logwatch"
 	fi
-
+	
+	_register_setup_function "_setup_user_patches"
 
         # Compute last as the config files are modified in-place
         _register_setup_function "_setup_chksum_file"
@@ -585,6 +587,18 @@ function _setup_dovecot() {
 	sed -i -e 's/#port = 995/port = 995/g' /etc/dovecot/conf.d/10-master.conf
 	sed -i -e 's/#ssl = yes/ssl = required/g' /etc/dovecot/conf.d/10-ssl.conf
 	sed -i 's/^postmaster_address = .*$/postmaster_address = '$POSTMASTER_ADDRESS'/g' /etc/dovecot/conf.d/15-lda.conf
+
+    # Set mail_location according to mailbox format
+    case "$DOVECOT_MAILBOX_FORMAT" in
+        sdbox|mdbox|maildir )
+            notify 'inf' "Dovecot $DOVECOT_MAILBOX_FORMAT format configured"
+            sed -i -e 's/^mail_location = .*$/mail_location = '$DOVECOT_MAILBOX_FORMAT':\/var\/mail\/%d\/%n/g' /etc/dovecot/conf.d/10-mail.conf
+            ;;
+        * )
+            notify 'inf' "Dovecot maildir format configured (default)"
+            sed -i -e 's/^mail_location = .*$/mail_location = maildir:\/var\/mail\/%d\/%n/g' /etc/dovecot/conf.d/10-mail.conf
+            ;;
+    esac
 
 	# Enable Managesieve service by setting the symlink
 	# to the configuration file Dovecot will actually find
@@ -1476,6 +1490,18 @@ function _setup_logwatch() {
 			chmod 744 /etc/cron.weekly/logwatch
 			;;
 	esac
+}
+
+function _setup_user_patches() {
+	notify 'inf' 'Executing user-patches.sh'
+
+	if [ -f /tmp/docker-mailserver/user-patches.sh ]; then
+		chmod +x /tmp/docker-mailserver/user-patches.sh
+		/tmp/docker-mailserver/user-patches.sh
+		notify 'inf' "Executed 'config/user-patches.sh'"
+	else
+		notify 'inf' "No user patches executed because optional '/tmp/docker-mailserver/user-patches.sh' is not provided."
+	fi
 }
 
 function _setup_environment() {
