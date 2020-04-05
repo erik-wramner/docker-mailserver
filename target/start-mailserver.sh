@@ -96,10 +96,6 @@ function register_functions() {
 	_register_setup_function "_setup_default_vars"
 	_register_setup_function "_setup_file_permissions"
 
-	if [ "$ENABLE_ELK_FORWARDER" = 1 ]; then
-		_register_setup_function "_setup_elk_forwarder"
-	fi
-
 	if [ "$SMTP_ONLY" != 1 ]; then
 		_register_setup_function "_setup_dovecot"
                 _register_setup_function "_setup_dovecot_dhparam"
@@ -211,10 +207,6 @@ function register_functions() {
 
 	_register_start_daemon "_start_daemons_cron"
 	_register_start_daemon "_start_daemons_rsyslog"
-
-	if [ "$ENABLE_ELK_FORWARDER" = 1 ]; then
-		_register_start_daemon "_start_daemons_filebeat"
-	fi
 
 	if [ "$SMTP_ONLY" != 1 ]; then
 		_register_start_daemon "_start_daemons_dovecot"
@@ -1402,12 +1394,16 @@ function _setup_security_stack() {
 			sed -i -r 's/^\$sa_spam_subject_tag (.*);/\$sa_spam_subject_tag = '"'$SA_SPAM_SUBJECT'"';/g' /etc/amavis/conf.d/20-debian_defaults
 		fi
 
-        # activate short circuits when SA BAYES is certain it has spam.
+        # activate short circuits when SA BAYES is certain it has spam or ham.
         if [ "$SA_SHORTCIRCUIT_BAYES_SPAM" = 1 ]; then
+			# automatically activate the Shortcircuit Plugin
+			sed -i -r 's/^# loadplugin Mail::SpamAssassin::Plugin::Shortcircuit/loadplugin Mail::SpamAssassin::Plugin::Shortcircuit/g' /etc/spamassassin/v320.pre
             sed -i -r 's/^# shortcircuit BAYES_99/shortcircuit BAYES_99/g' /etc/spamassassin/local.cf
         fi
 
         if [ "$SA_SHORTCIRCUIT_BAYES_HAM" = 1 ]; then
+			# automatically activate the Shortcircuit Plugin
+			sed -i -r 's/^# loadplugin Mail::SpamAssassin::Plugin::Shortcircuit/loadplugin Mail::SpamAssassin::Plugin::Shortcircuit/g' /etc/spamassassin/v320.pre
             sed -i -r 's/^# shortcircuit BAYES_00/shortcircuit BAYES_00/g' /etc/spamassassin/local.cf
         fi
 
@@ -1440,7 +1436,7 @@ function _setup_security_stack() {
 	fi
 
 	echo "1;  # ensure a defined return" >> $dms_amavis_file
-
+	chmod 444 $dms_amavis_file
 
 	# Fail2ban
 	if [ "$ENABLE_FAIL2BAN" = 1 ]; then
@@ -1459,18 +1455,6 @@ function _setup_security_stack() {
 	if [ -f /tmp/docker-mailserver/amavis.cf ]; then
 		cp /tmp/docker-mailserver/amavis.cf /etc/amavis/conf.d/50-user
 	fi
-}
-
-function _setup_elk_forwarder() {
-	notify 'task' 'Setting up Elk forwarder'
-
-	ELK_PORT=${ELK_PORT:="5044"}
-	ELK_HOST=${ELK_HOST:="elk"}
-	notify 'inf' "Enabling log forwarding to ELK ($ELK_HOST:$ELK_PORT)"
-	cat /etc/filebeat/filebeat.yml.tmpl \
-		| sed "s@\$ELK_HOST@$ELK_HOST@g" \
-		| sed "s@\$ELK_PORT@$ELK_PORT@g" \
-		> /etc/filebeat/filebeat.yml
 }
 
 function _setup_logrotate() {
@@ -1757,11 +1741,6 @@ function _start_daemons_dovecot() {
 		#echo "Listing users"
 		#/usr/sbin/dovecot user '*'
 	#fi
-}
-
-function _start_daemons_filebeat() {
-	notify 'task' 'Starting filebeat' 'n'
-    supervisorctl start filebeat
 }
 
 function _start_daemons_fetchmail() {
