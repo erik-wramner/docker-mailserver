@@ -126,6 +126,7 @@ RUN echo "0 */6 * * * clamav /usr/bin/freshclam --quiet" > /etc/cron.d/clamav-fr
 
 # Configures Dovecot
 COPY target/dovecot/auth-passwdfile.inc target/dovecot/??-*.conf /etc/dovecot/conf.d/
+COPY target/dovecot/scripts/quota-warning.sh /usr/local/bin/quota-warning.sh
 WORKDIR /usr/share/dovecot
 # hadolint ignore=SC2016,SC2086
 RUN sed -i -e 's/include_try \/usr\/share\/dovecot\/protocols\.d/include_try \/etc\/dovecot\/protocols\.d/g' /etc/dovecot/dovecot.conf && \
@@ -163,6 +164,9 @@ RUN chmod 755 /etc/init.d/postgrey && \
 
 # Copy PostSRSd Config
 COPY target/postsrsd/postsrsd /etc/default/postsrsd
+
+# Copy shared ffdhe params
+COPY target/shared/ffdhe4096.pem /etc/postfix/shared/ffdhe4096.pem
 
 # Enables Amavis
 COPY target/amavis/conf.d/* /etc/amavis/conf.d/
