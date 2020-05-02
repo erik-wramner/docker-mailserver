@@ -15,8 +15,7 @@ I haven't done much, the credit for this fine image should go to upstream.
 Includes:
 
 - [Postfix](http://www.postfix.org) with smtp or ldap auth
-- [Dovecot](https://www.dovecot.org) for sasl, imap (and optional pop3) with ssl support, with ldap auth
-  - Dovecot is installed from the [Dovecot Community Repo](https://wiki2.dovecot.org/PrebuiltBinaries)
+- [Dovecot](https://www.dovecot.org) for sasl, imap (and optional pop3) with ssl support, with ldap auth, sieve and [quotas](https://github.com/tomav/docker-mailserver/wiki/Configure-Accounts#mailbox-quota)
 - saslauthd with ldap auth
 - [Amavis](https://www.amavis.org/)
 - [Spamassasin](http://spamassassin.apache.org/) supporting custom rules
@@ -344,6 +343,14 @@ Enabled by ENABLE_POSTFIX_VIRTUAL_TRANSPORT. Specify the final delivery of postf
 Set the mailbox size limit for all users. If set to zero, the size will be unlimited (default).
 
 - **empty** => 0 (no limit)
+
+
+##### ENABLE_QUOTAS
+
+- **1** => Dovecot quota is enabled
+- 0 => Dovecot quota is disabled
+  
+See [mailbox quota](https://github.com/tomav/docker-mailserver/wiki/Configure-Accounts#mailbox-quota).
 
 ##### POSTFIX\_MESSAGE\_SIZE\_LIMIT
 
