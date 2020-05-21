@@ -21,7 +21,6 @@ ENV POSTGREY_DELAY=300
 ENV POSTGREY_MAX_AGE=35
 ENV POSTGREY_AUTO_WHITELIST_CLIENTS=5
 ENV POSTGREY_TEXT="Delayed by postgrey"
-
 ENV SASLAUTHD_MECHANISMS=pam
 ENV SASLAUTHD_MECH_OPTIONS=""
 
@@ -223,7 +222,7 @@ RUN sed -i -r "/^#?compress/c\compress\ncopytruncate" /etc/logrotate.conf && \
   sed -i -r 's|/var/log/clamav|/var/log/mail|g' /etc/logrotate.d/clamav-daemon && \
   sed -i -r 's|invoke-rc.d.*|/usr/bin/supervisorctl signal hup clamav >/dev/null \|\| true|g' /etc/logrotate.d/clamav-daemon && \
   sed -i -r 's|/var/log/clamav|/var/log/mail|g' /etc/logrotate.d/clamav-freshclam && \
-  sed -i -r 's|invoke-rc.d|#invoke-rc.d|g' /etc/logrotate.d/clamav-freshclam && \
+  sed -i -r '/postrotate/,/endscript/d' /etc/logrotate.d/clamav-freshclam && \
   sed -i -r 's|/var/log/mail|/var/log/mail/mail|g' /etc/logrotate.d/rsyslog && \
   sed -i -r '/\/var\/log\/mail\/mail.log/d' /etc/logrotate.d/rsyslog && \
   # prevent syslog logrotate warnings \
