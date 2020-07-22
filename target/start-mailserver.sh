@@ -405,7 +405,7 @@ function check() {
 }
 
 function _check_hostname() {
-	notify "task" "Check that hostname/domainname is provided or overidden (no default docker hostname/kubernetes) [$FUNCNAME]"
+	notify "task" "Check that hostname/domainname is provided or overridden (no default docker hostname/kubernetes) [$FUNCNAME]"
 
 	if [[ ! -z ${DEFAULT_VARS["OVERRIDE_HOSTNAME"]} ]]; then
 		export HOSTNAME=${DEFAULT_VARS["OVERRIDE_HOSTNAME"]}
@@ -505,7 +505,7 @@ function _setup_chksum_file() {
           pushd /tmp/docker-mailserver
 
           declare -a cf_files=()
-          for file in postfix-accounts.cf postfix-virtual.cf postfix-aliases.cf dovecot-quotas.cf; do
+          for file in postfix-accounts.cf postfix-virtual.cf postfix-aliases.cf dovecot-quotas.cf /etc/letsencrypt/acme.json "/etc/letsencrypt/live/$HOSTNAME/key.pem" "/etc/letsencrypt/live/$HOSTNAME/fullchain.pem"; do
             [ -f "$file" ] && cf_files+=("$file")
           done
 
@@ -786,7 +786,7 @@ function _setup_ldap() {
 	# _dovecot_ldap_mapping["DOVECOT_USER_FILTER"]="${DOVECOT_USER_FILTER:="${LDAP_QUERY_FILTER_USER}"}"
 
 	for var in ${!_dovecot_ldap_mapping[@]}; do
-		export $var=${_dovecot_ldap_mapping[$var]}
+		export $var="${_dovecot_ldap_mapping[$var]}"
 	done
 
 	configomat.sh "DOVECOT_" "/etc/dovecot/dovecot-ldap.conf.ext"
@@ -1043,10 +1043,12 @@ function _setup_ssl() {
 	# SSL certificate Configuration
 	case $SSL_TYPE in
 		"letsencrypt" )
-      notify 'inf' "Configuring SSL using 'letsecnrypt'"
+      notify 'inf' "Configuring SSL using 'letsencrypt'"
       # letsencrypt folders and files mounted in /etc/letsencrypt
       local LETSENCRYPT_DOMAIN=""
       local LETSENCRYPT_KEY=""
+
+      [[ -f /etc/letsencrypt/acme.json ]] && (extractCertsFromAcmeJson "$HOSTNAME" || extractCertsFromAcmeJson "$DOMAINNAME")
 
       # first determine the letsencrypt domain by checking both the full hostname or just the domainname if a SAN is used in the cert
       if [ -e "/etc/letsencrypt/live/$HOSTNAME/fullchain.pem" ]; then
@@ -1326,7 +1328,7 @@ function _setup_postfix_relay_hosts() {
 	if [ -f /tmp/docker-mailserver/postfix-sasl-password.cf ]; then
 		notify 'inf' "Adding relay authentication from postfix-sasl-password.cf"
 		while read line; do
-			if ! echo "$line" | grep -q -e "\s*#"; then
+			if ! echo "$line" | grep -q -e "^\s*#"; then
 				echo "$line" >> /etc/postfix/sasl_passwd
 			fi
 		done < /tmp/docker-mailserver/postfix-sasl-password.cf
