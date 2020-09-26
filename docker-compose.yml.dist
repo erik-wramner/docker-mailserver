@@ -1,4 +1,5 @@
-version: '2'
+version: '3.7'
+
 services:
   mail:
     image: erikwramner/docker-mailserver:latest
@@ -6,18 +7,18 @@ services:
     domainname: ${DOMAINNAME}
     container_name: ${CONTAINER_NAME}
     ports:
-    - "25:25"
-    - "143:143"
-    - "587:587"
-    - "993:993"
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
     volumes:
-    - maildata:/var/mail
-    - mailstate:/var/mail-state
-    - maillogs:/var/log/mail
-    - ./config/:/tmp/docker-mailserver/
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - maillogs:/var/log/mail
+      - ./config/:/tmp/docker-mailserver/
     env_file:
-    - .env
-    - env-mailserver
+      - .env
+      - env-mailserver
     cap_add:
     # NET_ADMIN needed by fail2ban, remove if not used or if used on the host
     - NET_ADMIN
@@ -38,10 +39,8 @@ services:
     # AUDIT_WRITE needed by cron when running freshclam, don't drop!
     # - AUDIT_WRITE
     restart: always
+
 volumes:
   maildata:
-    driver: local
   mailstate:
-    driver: local
   maillogs:
-    driver: local
